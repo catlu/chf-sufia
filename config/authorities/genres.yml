@@ -1,0 +1,22 @@
+:terms:
+    - :id: http://id.worldcat.org/fast/1423689
+      :term: Photographs
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
+    - :id: http://id.worldcat.org/fast/1726295
+      :term: Oral histories
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
+    - :id: http://id.worldcat.org/fast/1090104
+      :term: Rare books
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
+    - :id: http://id.worldcat.org/fast/1424060
+      :term: Manuscripts
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
+    - :id: http://id.worldcat.org/fast/1050567
+      :term: Painting
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
+    - :id: http://id.worldcat.org/fast/1076812
+      :term: Prints
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
+    - :id: http://id.worldcat.org/fast/1108810
+      :term: Scientific apparatus and instruments
+      :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
