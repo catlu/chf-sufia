@@ -18,6 +18,7 @@ Capybara.javascript_driver = :poltergeist # This is slower
 RSpec.configure do |config|
   config.include Warden::Test::Helpers, type: :feature
   config.include Devise::TestHelpers, type: :controller
+  #config.include FactoryGirl::Syntax::Methods
   config.after(:each, type: :feature) { Warden.test_reset! }
 
   config.before :each do |example|
@@ -38,3 +39,10 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 end
+
+#module FactoryGirl
+#  def self.find_or_create(handle, by=:email)
+#    tmpl = FactoryGirl.build(handle)
+#    tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryGirl.create(handle)
+#  end
+#end
