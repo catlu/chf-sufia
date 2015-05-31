@@ -1,22 +1,29 @@
 :terms:
-    - :id: http://id.worldcat.org/fast/1423689
+    - :id: fst01423689
       :term: Photographs
+      :uri: http://id.worldcat.org/fast/1423689
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
-    - :id: http://id.worldcat.org/fast/1726295
+    - :id: fst01726295
       :term: Oral histories
+      :uri: http://id.worldcat.org/fast/1726295
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
-    - :id: http://id.worldcat.org/fast/1090104
+    - :id: fst01090104
+      :uri: http://id.worldcat.org/fast/1090104
       :term: Rare books
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
-    - :id: http://id.worldcat.org/fast/1424060
+    - :id: fst01424060
+      :uri: http://id.worldcat.org/fast/1424060
       :term: Manuscripts
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-FormGenre
-    - :id: http://id.worldcat.org/fast/1050567
+    - :id: fst01050567
+      :uri: http://id.worldcat.org/fast/1050567
       :term: Painting
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
-    - :id: http://id.worldcat.org/fast/1076812
+    - :id: fst01076812
+      :uri: http://id.worldcat.org/fast/1076812
       :term: Prints
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
-    - :id: http://id.worldcat.org/fast/1108810
+    - :id: fst01108810
+      :uri: http://id.worldcat.org/fast/1108810
       :term: Scientific apparatus and instruments
       :type: http://id.worldcat.org/fast/ontology/1.0/#facet-Topical
