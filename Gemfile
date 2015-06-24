@@ -7,7 +7,6 @@ gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 gem 'rsolr', '~> 1.0.6'
 
 # extras
-gem 'hydra-role-management'
 gem "rdf-vocab"
 
 # local upgrades!
