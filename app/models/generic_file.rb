@@ -12,13 +12,6 @@ class GenericFile < ActiveFedora::Base
     end
   end
 
-  property :date_original, predicate: ::RDF::DC.date do |index|
-    index.as :stored_searchable
-  end
-  property :date_published, predicate: ::RDF::DC.issued do |index|
-    index.as :stored_searchable
-  end
-
   property :extent, predicate: ::RDF::DC.extent do |index|
     index.as :stored_searchable
   end
@@ -73,5 +66,11 @@ class GenericFile < ActiveFedora::Base
 #  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
 #    index.as :stored_searchable, :facetable
 #  end
+  has_and_belongs_to_many :date_of_work, predicate: ::RDF::DC.date,
+    class_name: "TimeSpan", inverse_of: :dates_of_work
+  has_and_belongs_to_many :date_of_publication, predicate: ::RDF::DC.issued,
+    class_name: "TimeSpan", inverse_of: :dates_of_publication
+
+  accepts_nested_attributes_for :date_of_work, :date_of_publication
 
 end
