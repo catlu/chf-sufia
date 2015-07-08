@@ -71,6 +71,16 @@ class GenericFile < ActiveFedora::Base
   has_and_belongs_to_many :date_of_publication, predicate: ::RDF::DC.issued,
     class_name: "TimeSpan", inverse_of: :dates_of_publication
 
-  accepts_nested_attributes_for :date_of_work, :date_of_publication
+  accepts_nested_attributes_for :date_of_publication, reject_if: :time_span_blank, allow_destroy: true
+  accepts_nested_attributes_for :date_of_work, reject_if: :time_span_blank, allow_destroy: true
+
+  def time_span_blank(attributes)
+    time_span_attributes = [
+      :start, :start_qualifier, :finish, :finish_qualifier, :label, :note
+    ]
+    time_span_attributes.all? do |key|
+      Array(attributes[key]).all?(&:empty?)
+    end
+  end
 
 end

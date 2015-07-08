@@ -76,6 +76,26 @@ RSpec.describe GenericFile do
       end
     end
 
+
+    describe ".time_span_blank" do
+      let(:ts_attributes) do
+        {
+          start: "",
+          start_qualifier: "",
+          finish: "",
+          finish_qualifier: "",
+          label: "",
+          note: "",
+        }
+      end
+      it "correctly returns true" do
+        expect(generic_file.time_span_blank(ts_attributes)).to eq true
+      end
+      it "correctly returns false" do
+        ts_attributes[:start] = "2015"
+        expect(generic_file.time_span_blank(ts_attributes)).to eq false
+      end
+    end
   end
 
 end
