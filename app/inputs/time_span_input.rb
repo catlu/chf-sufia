@@ -7,6 +7,12 @@ class TimeSpanInput < MultiValueWithHelpInput
 
   protected
 
+    LabelCol = "  <div class='col-md-2'>"
+    TextCol = "  <div class='col-md-4'>"
+    DropCol = "  <div class='col-md-3'>"
+    LongTextCol = "  <div class='col-md-7'>"
+    CheckCol = "  <div class='col-md-3'>"
+
     # Delegate this completely to the form.
     def collection
       @collection ||= Array.wrap(object[attribute_name]).reject { |value| value.to_s.strip.blank? }
@@ -55,11 +61,11 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_value = time_span.send(field)
       field_name = singular_input_name_for(attribute_name, index, field)
 
-      out << "  <div class='col-md-1'>"
+      out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
 
-      out << "  <div class='col-md-2'>"
+      out << TextCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name, placeholder: FORMAT_PLACEHOLDER))
       out << "  </div>"
 
@@ -68,7 +74,7 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_name = singular_input_name_for(attribute_name, index, field)
       field_value = time_span.send(field)
 
-      out << "  <div class='col-md-3'>"
+      out << DropCol
       out << template.select_tag(field_name, template.options_for_select(TimeSpan.start_qualifiers.map { |q| [q, q] }, field_value), {include_blank: true, label: "", class: "select form-control" })
       out << "  </div>"
 
@@ -81,11 +87,11 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_name = singular_input_name_for(attribute_name, index, field)
       field_value = time_span.send(field)
 
-      out << "  <div class='col-md-1'>"
+      out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
 
-      out << "  <div class='col-md-2'>"
+      out << TextCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name, placeholder: FORMAT_PLACEHOLDER))
       out << "  </div>"
 
@@ -93,15 +99,9 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_name = singular_input_name_for(attribute_name, index, field)
       field_value = time_span.send(field)
 
-      out << "  <div class='col-md-3'>"
+      out << DropCol
       out << template.select_tag(field_name, template.options_for_select(TimeSpan.end_qualifiers.map { |q| [q, q] }, field_value), {include_blank: true, label: "", class: "select form-control" })
       out << "  </div>"
-
-      # delete checkbox
-      out << "  <div class='col-md-2'>"
-      out << destroy_widget(attribute_name, index)
-      out << "  </div>"
-
 
       out << "</div>" # class=row
 
@@ -110,11 +110,11 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_name = singular_input_name_for(attribute_name, index, field)
       field_value = time_span.send(field)
 
-      out << "  <div class='col-md-1'>"
+      out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
 
-      out << "  <div class='col-md-5'>"
+      out << LongTextCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name))
       out << "  </div>"
       out << "</div>"
@@ -124,15 +124,20 @@ class TimeSpanInput < MultiValueWithHelpInput
       field_name = singular_input_name_for(attribute_name, index, field)
 
       out << "<div class='row'>"
-      out << "  <div class='col-md-1'>"
+      out << LabelCol
       out << template.label_tag(field_name, field.to_s.humanize, required: false)
       out << "  </div>"
 
-      out << "  <div class='col-md-5'>"
+      out << LongTextCol
       out << @builder.text_field(field_name, options.merge(value: field_value, name: field_name))
       out << "  </div>"
-      out << "</div>"
 
+      # delete checkbox
+      out << CheckCol
+      out << destroy_widget(attribute_name, index)
+      out << "  </div>"
+
+      out << "</div>"
       out
     end
 
