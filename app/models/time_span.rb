@@ -8,9 +8,6 @@ class TimeSpan < ActiveFedora::Base
   property :label, predicate: ::RDF::SKOS.prefLabel, multiple: false
   property :note, predicate: ::RDF::SKOS.note, multiple: false
 
-  has_many :dates_of_work, inverse_of: :date_of_work, class_name: "GenericFile"
-  has_many :dates_of_publication, inverse_of: :date_of_publication, class_name: "GenericFile"
-
   # DACS date qualifiers
   # http://www2.archivists.org/standards/DACS/part_I/chapter_2/4_date
   BEFORE = "before"

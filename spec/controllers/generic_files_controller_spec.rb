@@ -49,7 +49,7 @@ RSpec.describe GenericFilesController do
           note: "",
         }
       end
-      let(:time_span) { TimeSpan.new(ts_attributes) }
+      let(:time_span) { DateOfPublication.new(ts_attributes) }
 
       context "publication date" do
         context "creating a new date" do
@@ -78,7 +78,7 @@ RSpec.describe GenericFilesController do
               @file.reload
               pub_date = @file.date_of_publication.first
               expect(@file.date_of_publication.count).to eq(0)
-              expect(TimeSpan.all.count).to eq 0
+              expect(DateOfPublication.all.count).to eq 0
             end
           end
         end
@@ -114,7 +114,7 @@ RSpec.describe GenericFilesController do
             patch :update, id: file2, generic_file: {
               date_of_publication_attributes: { "0" => ts_attributes },
             }
-            expect(TimeSpan.all.count).to eq 2
+            expect(DateOfPublication.all.count).to eq 2
           end
 
           it "allows updating the existing timespan" do
