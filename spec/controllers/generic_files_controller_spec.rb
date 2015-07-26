@@ -68,6 +68,25 @@ RSpec.describe GenericFilesController do
               expect(pub_date).to be_persisted
             end
           end
+          context "two sets of publication date data are provided" do
+            it "persists the nested objects", focus:true do
+              ts_attributes2 = ts_attributes.clone
+              ts_attributes2[:start] = '1999'
+              patch :update, id: @file, generic_file: {
+                date_of_publication_attributes: { "0" => ts_attributes, "1" => ts_attributes2 },
+                resource_type: ['Image']
+              }
+
+              @file.reload
+              pub_dates = @file.date_of_publication
+
+              expect(@file.date_of_publication.count).to eq(2)
+              expect(pub_dates[0].start).to eq("2014")
+              expect(pub_dates[1].start).to eq("1999")
+              expect(pub_dates[0]).to be_persisted
+              expect(pub_dates[1]).to be_persisted
+            end
+          end
           context "publication date data is not provided" do
             it "does not persist a nested object" do
               ts_attributes[:start] = ""
@@ -132,6 +151,28 @@ RSpec.describe GenericFilesController do
             expect(pub_date.start).to eq("1337")
             expect(pub_date.start_qualifier).to eq("circa")
           end
+
+          it "allows updating the existing timespan while adding a 2nd timespan", focus: true do
+            patch :update, id: @file, generic_file: {
+              date_of_publication_attributes: {
+                "0" => ts_attributes.merge(id: time_span.id, start: "1337", start_qualifier: "circa"),
+                "1" => ts_attributes.merge(start: "5678")
+              },
+            }
+
+            @file.reload
+            expect(@file.date_of_publication.count).to eq(2)
+            pub_date = @file.date_of_publication.first
+
+            expect(pub_date.id).to eq(time_span.id)
+            expect(pub_date.start).to eq("1337")
+            expect(pub_date.start_qualifier).to eq("circa")
+
+            pub_date = @file.date_of_publication.second
+            expect(pub_date.start).to eq("5678")
+            expect(pub_date.start_qualifier).to eq("")
+          end
+
         end
       end
     end  # context dates
