@@ -14,7 +14,7 @@ class TimeSpan < ActiveFedora::Base
   AFTER = "after"
   CIRCA = "circa"
   DECADE = "decade"
-  UNDATED = "undated"
+  UNDATED = "Undated"
 
   START_QUALIFIERS = [BEFORE, AFTER, CIRCA, DECADE, UNDATED]
   END_QUALIFIERS = [BEFORE, CIRCA]
@@ -28,7 +28,7 @@ class TimeSpan < ActiveFedora::Base
   end
 
   def range?
-    start.any?(&:present?) && finish.any?(&:present?)
+    start.present? && finish.present?
   end
 
   # TODO: this produces 'circa YYYY - circa YYYY'
@@ -51,8 +51,10 @@ class TimeSpan < ActiveFedora::Base
     # TODO: If it has a date but also says undated, which do we believe?
     elsif qualifier ==  UNDATED
       qualifier
-    else
+    elsif not date.empty?
       date
+    else
+      nil
     end
   end
 
@@ -73,35 +75,35 @@ class TimeSpan < ActiveFedora::Base
 
   #  TODO: solr
   #  note 'decade' is a special case
-#  # Return an array of years, for faceting in Solr.
-#  def to_a
-#    if range?
-#      (start_integer..finish_integer).to_a
-#    else
-#      start_integer
-#    end
-#  end
-#
-#  private
-#    def start_integer
-#      extract_year(start)
-#    end
-#
-#    def finish_integer
-#      extract_year(finish)
-#    end
-#
-#    def extract_year(date)
-#      date = date.to_s
-#      if date.blank?
-#        nil
-#      elsif /^\d{4}$/ =~ date
-#        # Date.iso8601 doesn't support YYYY dates
-#        date.to_i
-#      else
-#        Date.iso8601(date).year
-#      end
-#    rescue ArgumentError
-#      raise "Invalid date: #{date.inspect} in #{self.inspect}"
-#    end
+  # Return an array of years, for faceting in Solr.
+  def to_a
+    if range?
+      (start_integer..finish_integer).to_a
+    else
+      start_integer
+    end
+  end
+
+  private
+    def start_integer
+      extract_year(start)
+    end
+
+    def finish_integer
+      extract_year(finish)
+    end
+
+    def extract_year(date)
+      date = date.to_s
+      if date.blank?
+        nil
+      elsif /^\d{4}$/ =~ date
+        # Date.iso8601 doesn't support YYYY dates
+        date.to_i
+      else
+        Date.iso8601(date).year
+      end
+    rescue ArgumentError
+      raise "Invalid date: #{date.inspect} in #{self.inspect}"
+    end
 end
