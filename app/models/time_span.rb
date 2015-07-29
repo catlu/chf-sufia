@@ -51,7 +51,7 @@ class TimeSpan < ActiveFedora::Base
     # TODO: If it has a date but also says undated, which do we believe?
     elsif qualifier ==  UNDATED
       qualifier
-    elsif not date.empty?
+    elsif date.present?
       date
     else
       nil

@@ -77,8 +77,8 @@ RSpec.describe TimeSpan do
         before do
           subject.start_qualifier = TimeSpan::UNDATED
         end
-        it 'returns "undated"' do
-          expect(subject.display_label).to eq 'undated'
+        it 'returns "Undated"' do
+          expect(subject.display_label).to eq 'Undated'
         end
       end
 
@@ -120,7 +120,7 @@ RSpec.describe TimeSpan do
 
   describe 'TimeSpan.start_qualifiers' do
     it 'has the expected start_qualifiers in order' do
-      expect(TimeSpan.start_qualifiers).to eq(%w(before after circa decade undated))
+      expect(TimeSpan.start_qualifiers).to eq(%w(before after circa decade Undated))
     end
     it 'has the expected end_qualifiers in order' do
       expect(TimeSpan.end_qualifiers).to eq(%w(before circa))

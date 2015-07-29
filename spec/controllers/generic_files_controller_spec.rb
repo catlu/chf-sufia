@@ -69,7 +69,7 @@ RSpec.describe GenericFilesController do
             end
           end
           context "two sets of publication date data are provided" do
-            it "persists the nested objects", focus:true do
+            it "persists the nested objects" do
               ts_attributes2 = ts_attributes.clone
               ts_attributes2[:start] = '1999'
               patch :update, id: @file, generic_file: {
@@ -152,7 +152,7 @@ RSpec.describe GenericFilesController do
             expect(pub_date.start_qualifier).to eq("circa")
           end
 
-          it "allows updating the existing timespan while adding a 2nd timespan", focus: true do
+          it "allows updating the existing timespan while adding a 2nd timespan" do
             patch :update, id: @file, generic_file: {
               date_of_publication_attributes: {
                 "0" => ts_attributes.merge(id: time_span.id, start: "1337", start_qualifier: "circa"),
