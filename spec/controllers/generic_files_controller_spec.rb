@@ -69,15 +69,17 @@ RSpec.describe GenericFilesController do
             end
           end
           context "two sets of publication date data are provided" do
-            it "persists the nested objects" do
-              ts_attributes2 = ts_attributes.clone
+            let(:ts_attributes2) { ts_attributes.clone }
+            before do
               ts_attributes2[:start] = '1999'
               patch :update, id: @file, generic_file: {
                 date_of_publication_attributes: { "0" => ts_attributes, "1" => ts_attributes2 },
                 resource_type: ['Image']
               }
-
               @file.reload
+            end
+
+            it "persists the nested objects" do
               pub_dates = @file.date_of_publication
 
               expect(@file.date_of_publication.count).to eq(2)
@@ -86,6 +88,14 @@ RSpec.describe GenericFilesController do
               expect(pub_dates[0]).to be_persisted
               expect(pub_dates[1]).to be_persisted
             end
+
+            it "loads both ids from json", focus: true do
+              expect(@file.date_of_publication_ids.count).to eq 2
+              loader = ActiveFedora::SolrInstanceLoader.new(GenericFile, @file.id)
+              # fails, get 1
+              expect(loader.object.date_of_publication_ids.count).to eq 2
+            end
+
           end
           context "publication date data is not provided" do
             it "does not persist a nested object" do
