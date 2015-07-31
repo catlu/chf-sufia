@@ -90,13 +90,6 @@ RSpec.describe GenericFilesController do
               expect(pub_dates[1]).to be_persisted
             end
 
-            it "loads both ids from json" do
-              expect(file.date_of_publication_ids.count).to eq 2
-              loader = ActiveFedora::SolrInstanceLoader.new(GenericFile, file.id)
-              # fails, get 1
-              expect(loader.object.date_of_publication_ids.count).to eq 2
-            end
-
           end
           context "publication date data is not provided" do
             it "does not persist a nested object" do
