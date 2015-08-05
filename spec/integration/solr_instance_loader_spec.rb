@@ -17,7 +17,6 @@ RSpec.describe ActiveFedora::SolrInstanceLoader do
         expect(file.date_of_work_ids.count).to eq 2
         loader = ActiveFedora::SolrInstanceLoader.new(GenericFile, file.id)
         expect(loader.object.title).to eq ['Blueberries for Sal']
-        # fails, get 1
         expect(loader.object.date_of_work_ids.count).to eq 2
       end
     end

@@ -1,3 +1,3 @@
 class DateOfPublication < TimeSpan
-  has_many :generic_files, inverse_of: :date_of_publication, class_name: "GenericFile"
+  belongs_to :is_publication_date_of, predicate: ::RDF::URI.new("http://chemheritage.org/ns/publication_date_of"), class_name: 'GenericFile'
 end

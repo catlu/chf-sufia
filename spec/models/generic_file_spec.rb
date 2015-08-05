@@ -76,5 +76,14 @@ RSpec.describe GenericFile do
       end
     end
 
+    describe "retrieve a Date Range" do
+      it "finds the nested attributes" do
+        generic_file.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
+        generic_file.save!
+        expect(GenericFile.find(generic_file.id).date_of_work.count).to eq 2 #returns both
+        expect(GenericFile.load_instance_from_solr(generic_file.id).date_of_work.count).to eq 2 #returns both
+      end
+    end
+
   end
 end

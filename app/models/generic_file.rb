@@ -61,15 +61,15 @@ class GenericFile < ActiveFedora::Base
     index.as :stored_searchable, :facetable
   end
 
-
   # TODO: make this work either via linked data or nested attributes
 #  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
 #    index.as :stored_searchable, :facetable
 #  end
-  has_and_belongs_to_many :date_of_work, predicate: ::RDF::DC.date, class_name: "DateOfWork"
-  has_and_belongs_to_many :date_of_publication, predicate: ::RDF::DC.issued, class_name: "DateOfPublication"
+  # Class names can be inferred since they are the same as the association name.
+  has_many :date_of_work, inverse_of: :is_work_date_of, as: 'is_work_date_of'
+  has_many :date_of_publication, inverse_of: :is_publication_date_of, as: 'is_publication_date_of'
 
-  accepts_nested_attributes_for :date_of_publication, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :date_of_work, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :date_of_publication, reject_if: :all_blank, allow_destroy: true
 
 end
