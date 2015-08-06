@@ -65,7 +65,8 @@ class GenericFile < ActiveFedora::Base
 #  property :genre, predicate: ::RDF::Vocab::EDM.hasType do |index|
 #    index.as :stored_searchable, :facetable
 #  end
-  # Class names can be inferred since they are the same as the association name.
+
+# Class names can be inferred since they are the same as the association name.
   has_many :date_of_work, inverse_of: :is_work_date_of, as: 'is_work_date_of'
   has_many :date_of_publication, inverse_of: :is_publication_date_of, as: 'is_publication_date_of'
 
