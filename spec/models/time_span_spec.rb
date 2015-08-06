@@ -69,7 +69,7 @@ RSpec.describe TimeSpan do
           subject.start_qualifier = TimeSpan::DECADE
         end
         it 'adds "s" to the start date' do
-          expect(subject.display_label).to eq '1950s'
+          expect(subject.display_label).to eq '1950s (decade)'
         end
       end
 
@@ -120,7 +120,7 @@ RSpec.describe TimeSpan do
 
   describe 'TimeSpan.start_qualifiers' do
     it 'has the expected start_qualifiers in order' do
-      expect(TimeSpan.start_qualifiers).to eq(%w(before after circa decade Undated))
+      expect(TimeSpan.start_qualifiers).to eq(%w(before after century circa decade Undated))
     end
     it 'has the expected end_qualifiers in order' do
       expect(TimeSpan.end_qualifiers).to eq(%w(before circa))

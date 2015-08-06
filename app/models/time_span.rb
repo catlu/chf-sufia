@@ -12,11 +12,12 @@ class TimeSpan < ActiveFedora::Base
   # http://www2.archivists.org/standards/DACS/part_I/chapter_2/4_date
   BEFORE = "before"
   AFTER = "after"
+  CENTURY = "century"
   CIRCA = "circa"
   DECADE = "decade"
   UNDATED = "Undated"
 
-  START_QUALIFIERS = [BEFORE, AFTER, CIRCA, DECADE, UNDATED]
+  START_QUALIFIERS = [BEFORE, AFTER, CENTURY, CIRCA, DECADE, UNDATED]
   END_QUALIFIERS = [BEFORE, CIRCA]
 
   def self.start_qualifiers
@@ -47,7 +48,9 @@ class TimeSpan < ActiveFedora::Base
     if qualifier == (BEFORE) || qualifier == (AFTER) || qualifier == (CIRCA)
       "#{qualifier} #{date}"
     elsif qualifier ==  DECADE
-      "#{date}s"
+      "#{date}s (decade)"
+    elsif qualifier ==  CENTURY
+      "#{date}s (century)"
     # TODO: If it has a date but also says undated, which do we believe?
     elsif qualifier ==  UNDATED
       qualifier
