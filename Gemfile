@@ -12,7 +12,7 @@ gem 'hydra-editor', github: 'projecthydra/hydra-editor', :ref => '7c8983'
 gem 'qa', github: 'projecthydra-labs/questioning_authority'
 
 # local upgrades!
-gem 'active-fedora', '~> 9.1.0'
+gem 'active-fedora', '~> 9.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.2'
