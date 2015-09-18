@@ -13,14 +13,33 @@
 #This software program and documentation are copyrighted by The Regents of the University of California. The software program and documentation are supplied "as is", without any accompanying services from The Regents. The Regents does not warrant that the operation of the program will be uninterrupted or error-free. The end-user understands that the program was developed for research purposes and is advised not to rely exclusively on the program for any reason.
 #
 #IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-class TimeSpan < ActiveFedora::Base
-  type ::RDF::Vocab::EDM.TimeSpan
+class TimeSpan < ActiveTriples::Resource
 
-  property :start, predicate: ::RDF::Vocab::EDM.begin, multiple: false
-  property :finish, predicate: ::RDF::Vocab::EDM.end, multiple: false
-  property :start_qualifier, predicate: ::RDF::Vocab::CRM.P79_beginning_is_qualified_by, multiple: false
-  property :finish_qualifier, predicate: ::RDF::Vocab::CRM.P80_end_is_qualified_by, multiple: false
-  property :note, predicate: ::RDF::SKOS.note, multiple: false
+  configure type: ::RDF::Vocab::EDM.TimeSpan
+
+  def initialize(uri=RDF::Node.new, parent=nil)
+    binding.pry
+    if uri.try(:node?)
+      uri = RDF::URI("#timespan_#{uri.to_s.gsub('_:','')}")
+    elsif uri.start_with?("#")
+      uri = RDF::URI(uri)
+    end
+    super
+  end
+
+  def final_parent
+    parent
+  end
+
+  def new_record?
+    !type.include?(RDF::URI("http://fedora.info/definitions/v4/repository#Resource"))
+  end
+
+  property :start, predicate: ::RDF::Vocab::EDM.begin
+  property :finish, predicate: ::RDF::Vocab::EDM.end
+  property :start_qualifier, predicate: ::RDF::Vocab::CRM.P79_beginning_is_qualified_by
+  property :finish_qualifier, predicate: ::RDF::Vocab::CRM.P80_end_is_qualified_by
+  property :note, predicate: ::RDF::SKOS.note
 
   # DACS date qualifiers
   # http://www2.archivists.org/standards/DACS/part_I/chapter_2/4_date
@@ -46,15 +65,13 @@ class TimeSpan < ActiveFedora::Base
     start.present? && finish.present?
   end
 
-  # TODO: this produces 'circa YYYY - circa YYYY'
+  # TODO: move to presenter
   # Return a string for display of this record
   def display_label
-    start_string = qualified_date(start, start_qualifier)
-    finish_string = qualified_date(finish, finish_qualifier)
+    start_string = qualified_date(start.first, start_qualifier.first)
+    finish_string = qualified_date(finish.first, finish_qualifier.first)
     date_string = [start_string, finish_string].compact.join(' - ')
-    if note.present?
-      date_string << " (#{note})"
-    end
+    date_string << " (#{note.first})" unless note.empty?
     date_string
   end
 
@@ -91,37 +108,38 @@ class TimeSpan < ActiveFedora::Base
   #    - before
   #    - circa
 
-  #  TODO: solr
-  #  note 'decade' is a special case
-  # Return an array of years, for faceting in Solr.
-  def to_a
-    if range?
-      (start_integer..finish_integer).to_a
-    else
-      start_integer
-    end
-  end
-
-  private
-    def start_integer
-      extract_year(start)
-    end
-
-    def finish_integer
-      extract_year(finish)
-    end
-
-    def extract_year(date)
-      date = date.to_s
-      if date.blank?
-        nil
-      elsif /^\d{4}$/ =~ date
-        # Date.iso8601 doesn't support YYYY dates
-        date.to_i
-      else
-        Date.iso8601(date).year
-      end
-    rescue ArgumentError
-      raise "Invalid date: #{date.inspect} in #{self.inspect}"
-    end
+#  #  TODO: solr
+#  #  TODO: move to parent object?
+#  #  note 'decade', 'century' special cases
+#  # Return an array of years, for faceting in Solr.
+#  def to_a
+#    if range?
+#      (start_integer..finish_integer).to_a
+#    else
+#      start_integer
+#    end
+#  end
+#
+#  private
+#    def start_integer
+#      extract_year(start)
+#    end
+#
+#    def finish_integer
+#      extract_year(finish)
+#    end
+#
+#    def extract_year(date)
+#      date = date.to_s
+#      if date.blank?
+#        nil
+#      elsif /^\d{4}$/ =~ date
+#        # Date.iso8601 doesn't support YYYY dates
+#        date.to_i
+#      else
+#        Date.iso8601(date).year
+#      end
+#    rescue ArgumentError
+#      raise "Invalid date: #{date.inspect} in #{self.inspect}"
+#    end
 end

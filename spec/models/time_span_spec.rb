@@ -2,6 +2,22 @@ require 'rails_helper'
 
 RSpec.describe TimeSpan do
 
+  describe "hash stuff" do
+    subject { TimeSpan.new(uri, parent) }
+
+    let(:uri) { RDF::Node.new }
+    let(:parent) { RDF::Graph.new }
+
+    describe "instantiation" do
+      context "with a string hash uri" do
+        let(:uri) { "#bla_46" }
+        it "should make it a URI" do
+          expect(subject.rdf_subject).to eq RDF::URI("#bla_46")
+        end
+      end
+    end
+  end
+
   describe "rdf type" do
     subject { described_class.new.type }
     it { is_expected.to eq [::RDF::URI.new('http://www.europeana.eu/schemas/edm/TimeSpan')] }
@@ -12,7 +28,7 @@ RSpec.describe TimeSpan do
       subject.start = '1930'
     end
     it "has start" do
-      expect(subject.start).to eq '1930'
+      expect(subject.start).to eq ['1930']
     end
   end
 

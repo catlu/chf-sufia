@@ -65,8 +65,9 @@ RSpec.describe GenericFile do
       expect(generic_file.extent).to eq ["infinitely long"]
     end
 
-    describe "add a Date Range" do
+    describe "add a Date Range", focus: true do
       before do
+        binding.pry
         generic_file.date_of_work_attributes = [{start: "2003", finish: "2015"}]
       end
       it "uses TimeSpan class" do
@@ -74,14 +75,124 @@ RSpec.describe GenericFile do
       end
     end
 
-    describe "retrieve a Date Range" do
-      it "finds the nested attributes" do
-        generic_file.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
-        generic_file.save!
-        expect(GenericFile.find(generic_file.id).date_of_work.count).to eq 2 #returns both
-        expect(GenericFile.load_instance_from_solr(generic_file.id).date_of_work.count).to eq 2 #returns both
-      end
-    end
-
+#    describe "retrieve a Date Range" do
+#      it "finds the nested attributes" do
+#        generic_file.date_of_work_attributes = [ { start: "2003" }, { start: "2996" } ]
+#        generic_file.save!
+#        expect(GenericFile.find(generic_file.id).date_of_work.count).to eq 2 #returns both
+#        expect(GenericFile.load_instance_from_solr(generic_file.id).date_of_work.count).to eq 2 #returns both
+#      end
+#    end
+#
   end
+
+#  describe "#date_of_work_attributes" do
+#    let(:attributes) do
+#      [{
+#        start: '2003',
+#        finish: '2015'
+#      }]
+#    end
+#
+#    it "should be able to delete items" do
+#      g = described_class.new
+#      g.date_of_work_attributes = attributes
+#      g.save!(:validate => false)
+#      g.date_of_work_attributes = [
+#        {
+#          :id => g.date_of_work.first.id,
+#          :_destroy => true
+#        },
+#        { :start => "1999" }
+#      ]
+#      
+#      g.save!(:validate => false)
+#      g.reload
+#
+#      expect(g.date_of_work.length).to eq 1
+#      expect(g.date_of_work.first.start).to eq ["1999"]
+#    end
+#    it "should work on already persisted items" do
+#      g = described_class.new.tap{|x| x.save(:validate => false)}
+#      g.nested_authors_attributes = attributes
+#
+#      g.save!(:validate => false)
+#      g.reload
+#
+#      expect(g.nested_authors.first.name).to eq ["Bob"]
+#    end
+#    it "should be able to edit" do
+#      g = described_class.new
+#      g.nested_authors_attributes = attributes
+#      g.save!(:validate => false)
+#      g.nested_authors_attributes = {
+#        "0" => {
+#          :id => g.nested_authors.first.id,
+#          :name => "Banana"
+#        }
+#      }
+#      
+#      g.save!(:validate => false)
+#      g.reload
+#
+#      expect(g.nested_authors.length).to eq 1
+#      expect(g.nested_authors.first.name).to eq ["Banana"]
+#    end
+#    it "should not create blank ones" do
+#      g = described_class.new
+#      g.nested_authors_attributes = {
+#        "0" => {
+#          :name => "",
+#          :orcid => ""
+#        }
+#      }
+#      expect(g.nested_authors.length).to eq 0
+#    end
+#  end
+#  it "should be able to create nested authors" do
+#    g = described_class.new
+#    g.nested_authors_attributes = [{:name => "Bob", :orcid => "Test"}]
+#    g.save!(:validate => false)
+#
+#    g.reload
+#
+#    expect(g.nested_authors.first.name).to eq ["Bob"]
+#    expect(g.nested_authors.first.orcid).to eq ["Test"]
+#    expect(g.nested_authors.first.new_record?).to eq false
+#  end
+#  it "should be able to create multiple nested authors" do
+#    g = described_class.new
+#    g.nested_authors_attributes = {
+#      "0" => {
+#        "name" => "1"
+#      },
+#      "1" => {
+#        "name" => "2"
+#      }
+#    }
+#
+#    g.save!(:validate => false)
+#    g.reload
+#
+#    expect(g.nested_authors.length).to eq 2
+#    expect(g.nested_authors.map{|x| x.name.first}).to contain_exactly("1","2")
+#  end
+#  describe "#attributes=" do
+#    it "accepts nested attributes" do
+#      g = described_class.new
+#      g.attributes = {
+#        :nested_authors_attributes => [
+#          {
+#            :name => "Bob",
+#            :orcid => "Test"
+#          }
+#        ]
+#      }
+#
+#      g.save!(:validate => false)
+#      g.reload
+#
+#      expect(g.nested_authors.first.name).to eq ["Bob"]
+#    end
+  #end
 end
